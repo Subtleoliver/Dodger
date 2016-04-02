@@ -11,8 +11,8 @@ public class Movement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButton("Horizontal"))
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(Input.GetAxis("Horizontal")*speed*multiplier,0));
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(Input.GetAxis("Horizontal")*speed*multiplier,0));
+		GetComponent<Animator> ().SetFloat ("Horizontal", Input.GetAxis ("Horizontal"));
 
 	}
 
