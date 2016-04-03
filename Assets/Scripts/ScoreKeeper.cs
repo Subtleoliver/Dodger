@@ -4,22 +4,24 @@ using System.Collections;
 public class ScoreKeeper : MonoBehaviour {
     public bool inGame = false;
 
-    public float score = 0;
+	public float timeAlive = 0;
+	public int score = 0;
     public int highScore;
 
     string HIGHSCORE_POS = "HSCORE";
 
     GameObject playerPrefab;
-    // Use this for initialization
+	EnemySpawner enemSpawner;
     void Start ()
     {
+		enemSpawner = GetComponent<EnemySpawner> ();
         highScore = PlayerPrefs.GetInt(HIGHSCORE_POS, 0);
         playerPrefab = Resources.Load("Player") as GameObject;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if(inGame)score += Time.deltaTime;
+        if(inGame)timeAlive += Time.deltaTime;
     }
     
     public void StartGame()
@@ -41,8 +43,9 @@ public class ScoreKeeper : MonoBehaviour {
 
     public void OnGameEnd()
     {
-        if(score > highScore)highScore = Mathf.RoundToInt(score);
-        score = 0;
+		score = GetScore();
+		if(score > highScore)highScore = score;
+        timeAlive = 0;
         inGame = false;
 
         Time.timeScale = 0;
@@ -56,17 +59,24 @@ public class ScoreKeeper : MonoBehaviour {
 
     void OnGUI()
     {
-        if (inGame) GUI.Box(new Rect(10, 10, Screen.width / 8, Screen.height / 8), "Score:" + (int)score + "\n" + "HighScore: " + highScore);
+		if (inGame) GUI.Box(new Rect(10, 10, Screen.width / 8, Screen.height / 8), "Score:" + GetScore() + "\n" + "HighScore: " + highScore);
         else {
             int buttonWidth = Screen.width / 8;
             int buttonHeight = Screen.height / 8;
+			GUI.Box (new Rect (Screen.width / 2 - buttonWidth / 2, Screen.height / 2.5f - buttonHeight / 2, buttonWidth, buttonHeight), "Score: " + score + "\n" + "Highscore: " + highScore);
             if (GUI.Button(new Rect(Screen.width / 2 - buttonWidth/2, Screen.height / 2 - buttonHeight / 2, buttonWidth, buttonHeight), "Play Again")) StartGame();
             GUI.BeginGroup(new Rect(Screen.width / 2 - buttonWidth/1.5f, Screen.height / 1.5f - buttonHeight / 2f, buttonWidth * 1.5f, buttonHeight));
             GUILayout.BeginHorizontal(GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-            GUILayout.Button("-");
-            GUILayout.Button("+");
+			EnemySpawner enemSpawner = GetComponent<EnemySpawner> ();
+			if(GUILayout.Button("-"))enemSpawner.changeSpawnTime(-0.1f);
+			if(GUILayout.Button("+"))enemSpawner.changeSpawnTime(0.1f);
+			GUILayout.Label ("Enemy spawn time:" + enemSpawner.timeBetweenSpawn);
             GUILayout.EndHorizontal();
             GUI.EndGroup();
         }
     }
+
+	int GetScore(){
+		return Mathf.RoundToInt(timeAlive / enemSpawner.timeBetweenSpawn);
+	}
 }
