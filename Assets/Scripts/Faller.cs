@@ -9,6 +9,6 @@ public class Faller : MonoBehaviour {
 
     void Update()
     {
-        if (transform.position.y < 0) Destroy(gameObject);
+        if (transform.position.y < -2) Destroy(gameObject);
     }
 }

@@ -45,7 +45,7 @@ public class EnemySpawner : MonoBehaviour {
 	Vector2 enemySpawnPoint(float range)
     {
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        return new Vector2(playerObject.transform.position.x + Random.Range(-range,range),5);
+        return new Vector2(playerObject.transform.position.x + Random.Range(-range,range),10);
     }
 
 	Vector2 secondaryEnemiesSpawnPoint(float range,float adder){

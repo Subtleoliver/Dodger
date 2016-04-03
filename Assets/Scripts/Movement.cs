@@ -14,6 +14,18 @@ public class Movement : MonoBehaviour {
         GetComponent<Rigidbody2D>().AddForce(new Vector2(Input.GetAxisRaw("Horizontal")*speed*multiplier,0));
 		GetComponent<Animator> ().SetFloat ("Horizontal", Input.GetAxisRaw ("Horizontal"));
 
+		Quaternion oldRotation = gameObject.transform.rotation;
+		if (Input.GetAxisRaw ("Horizontal") > 0.1) {
+			Quaternion newRotation = Quaternion.Euler (0f, -50f, 0f);
+			gameObject.transform.rotation = Quaternion.LerpUnclamped (oldRotation, newRotation, Time.deltaTime * 1f);
+		} else if (Input.GetAxisRaw ("Horizontal") < 0.1) {
+			Quaternion newRotation = Quaternion.Euler (0f, 50f, 0f);
+			gameObject.transform.rotation = Quaternion.LerpUnclamped (oldRotation, newRotation, Time.deltaTime * 1f);
+		}
+		if (!Input.GetButton ("Horizontal")) {
+			Quaternion newRotation = Quaternion.Euler (0f, 0f, 0f);
+			gameObject.transform.rotation = Quaternion.LerpUnclamped (oldRotation, newRotation, Time.deltaTime * 1f);
+		}
 	}
 
     public void OnHit()
