@@ -10,6 +10,17 @@ public class ScoreKeeper : MonoBehaviour {
 
     string HIGHSCORE_POS = "HSCORE";
 
+	float oldWidth = 0f;
+	float oldHeight = 0f;
+	float Ratio = 25f;
+	public int getFontSize(){
+		if (oldWidth != Screen.width || oldHeight != Screen.height) {
+			oldWidth = Screen.width;
+			oldHeight = Screen.height;
+		}
+		return (int)(Mathf.Min (Screen.width, Screen.height) / Ratio);
+	}
+
     GameObject playerPrefab;
 	EnemySpawner enemSpawner;
     void Start ()
@@ -18,7 +29,8 @@ public class ScoreKeeper : MonoBehaviour {
         highScore = PlayerPrefs.GetInt(HIGHSCORE_POS, 0);
         playerPrefab = Resources.Load("Player") as GameObject;
     }
-	
+
+
 	// Update is called once per frame
 	void Update () {
         if(inGame)timeAlive += Time.deltaTime;
@@ -59,8 +71,22 @@ public class ScoreKeeper : MonoBehaviour {
 
     void OnGUI()
     {
-		if (inGame) GUI.Box(new Rect(10, 10, Screen.width / 8, Screen.height / 8), "Score:" + GetScore() + "\n" + "HighScore: " + highScore);
-        else {
+		if (inGame) {
+			GUIStyle centeredStyle = new GUIStyle(GUI.skin.label);
+			centeredStyle.alignment = TextAnchor.UpperCenter;
+			centeredStyle.fontStyle = FontStyle.Bold;
+			centeredStyle.fontSize = getFontSize ();
+
+			centeredStyle.normal.textColor = Color.black;
+			for (int x = -2; x < 2; x++)
+				for (int y = -2; y < 2; y++) {
+					GUI.Label (new Rect (x, y, Screen.width, Screen.height), "Score:" + GetScore () + "\n" + "HighScore: " + highScore, centeredStyle);
+				
+				}
+			
+			centeredStyle.normal.textColor = Color.yellow;
+			GUI.Label (new Rect (0, 0, Screen.width, Screen.height), "Score:" + GetScore () + "\n" + "HighScore: " + highScore, centeredStyle);
+		} else {
             int buttonWidth = Screen.width / 8;
             int buttonHeight = Screen.height / 8;
 			GUI.Box (new Rect (Screen.width / 2 - buttonWidth / 2, Screen.height / 2.5f - buttonHeight / 2, buttonWidth, buttonHeight), "Score: " + score + "\n" + "Highscore: " + highScore);
