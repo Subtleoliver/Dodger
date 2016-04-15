@@ -5,7 +5,9 @@ public class EnemySpawner : MonoBehaviour {
     public float timeBetweenSpawn = 0.5f;
 	float minTimeBetweenSpawn = 0.5f;
     float timeUntilSpawn = 0f;
-	int enemiesToSpawn = 2;
+
+	public int maxEnemiesToSpawn = 10;
+	public int minEnemiesToSpawn = 2;
 
 	public void changeSpawnTime(float change){
 		float newTime = timeBetweenSpawn + change;
@@ -35,31 +37,25 @@ public class EnemySpawner : MonoBehaviour {
 
     void SpawnEnemy()
     {
-		GameObject.Instantiate(enemyPrefab,enemySpawnPoint(_range), Quaternion.identity);
+		int enemiesToSpawn = Random.Range (minEnemiesToSpawn, maxEnemiesToSpawn);
 		for (int i = 0; i < enemiesToSpawn; i++) {
-			GameObject.Instantiate(enemyPrefab,secondaryEnemiesSpawnPoint(_range,5), Quaternion.identity);
+			GameObject.Instantiate(enemyPrefab,spawnPoint(), Quaternion.identity);
 		}
     }
 
-    public float _range = 1.5f;
-	Vector2 enemySpawnPoint(float range)
-    {
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        return new Vector2(playerObject.transform.position.x + Random.Range(-range,range),10);
-    }
-
-	Vector2 secondaryEnemiesSpawnPoint(float range,float adder){
-		bool negative = randomBool ();
-		Vector2 basePoint = enemySpawnPoint (range);
-		if (negative)
-			basePoint.x -= adder;
-		else
-			basePoint.x += adder;
-		
-		return basePoint;
+	Vector2 spawnPoint(){
+		GameObject playerObject = GameObject.FindGameObjectWithTag ("Player");
+		return new Vector2(playerObject.transform.position.x + Random.Range(0,range)*randonPosOrNeg(),10 + Random.Range(0,heightRange));
 	}
+		
+	public float range = 10f;
+	public float heightRange = 1.5f;
 
-	bool randomBool(){
-		return Random.value > 0.5;
+	int randonPosOrNeg(){
+		float i = Random.value;
+		if (i <= 0.5)
+			return -1;
+
+		return 1;
 	}
 }

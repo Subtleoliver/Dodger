@@ -50,7 +50,7 @@ public class ScoreKeeper : MonoBehaviour {
 
     void SpawnPlayer()
     {
-        GameObject.Instantiate(playerPrefab, new Vector3(0, 1),Quaternion.identity);
+        GameObject.Instantiate(playerPrefab, new Vector3(0, 1.1f),Quaternion.identity);
     }
 
     public void OnGameEnd()
