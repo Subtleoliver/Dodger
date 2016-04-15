@@ -12,7 +12,6 @@ public class Movement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         GetComponent<Rigidbody2D>().AddForce(new Vector2(Input.GetAxisRaw("Horizontal")*speed*multiplier,0));
-		GetComponent<Animator> ().SetFloat ("Horizontal", Input.GetAxisRaw ("Horizontal"));
 
 		Quaternion oldRotation = gameObject.transform.rotation;
 		if (Input.GetAxisRaw ("Horizontal") > 0.1) {
