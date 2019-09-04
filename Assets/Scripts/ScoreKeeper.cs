@@ -87,8 +87,9 @@ public class ScoreKeeper : MonoBehaviour {
 			centeredStyle.normal.textColor = Color.yellow;
 			GUI.Label (new Rect (0, 0, Screen.width, Screen.height), "Score:" + GetScore () + "\n" + "HighScore: " + highScore, centeredStyle);
 		} else {
-            int buttonWidth = Screen.width / 8;
-            int buttonHeight = Screen.height / 8;
+            int buttonWidth = Screen.width / 5;
+            int buttonHeight = Screen.height / 6;
+
 			GUI.Box (new Rect (Screen.width / 2 - buttonWidth / 2, Screen.height / 2.5f - buttonHeight / 2, buttonWidth, buttonHeight), "Score: " + score + "\n" + "Highscore: " + highScore);
             if (GUI.Button(new Rect(Screen.width / 2 - buttonWidth/2, Screen.height / 2 - buttonHeight / 2, buttonWidth, buttonHeight), "Play Again")) StartGame();
             GUI.BeginGroup(new Rect(Screen.width / 2 - buttonWidth/1.5f, Screen.height / 1.5f - buttonHeight / 2f, buttonWidth * 1.5f, buttonHeight));
